@@ -1,12 +1,13 @@
 import 'dotenv/config';
-import { definePrismaConfig } from 'prisma/config';
-import { defineConfig as ormConfig } from '@prisma/orm-postgres/config';
+import { defineConfig, env } from 'prisma/config';
 
-export default definePrismaConfig({
-  orm: ormConfig({
-    contract: "./src/prisma/contract.prisma",
-    db: {
-      connection: process.env['DATABASE_URL']!,
-    },
-  }),
+export default defineConfig({
+  schema: './src/prisma/schema.prisma',
+  migrations: {
+    path: './src/prisma/migrations',
+  },
+  datasource: {
+    // Direct (non-pooled) connection, used by the CLI for introspection/migrations.
+    url: env('DIRECT_URL'),
+  },
 });
