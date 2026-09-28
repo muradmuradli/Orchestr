@@ -3,11 +3,7 @@ import { defineConfig, env } from 'prisma/config';
 
 export default defineConfig({
   schema: './src/prisma/schema.prisma',
-  migrations: {
-    path: './src/prisma/migrations',
-  },
   datasource: {
-    // Direct (non-pooled) connection, used by the CLI for introspection/migrations.
-    url: env('DIRECT_URL'),
+    url: env('DATABASE_URL'),
   },
 });

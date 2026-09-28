@@ -7,24 +7,53 @@ datasource db {
   provider = "postgresql"
 }
 
-model Post {
-  authorId  Int
-  content   String?
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  id        Int      @id @default(autoincrement())
-  title     String
-  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(6)
-  author    User     @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@index([authorId], map: "Post_authorId_idx_e47547ed")
+model User {
+  createdAt     DateTime  @default(now()) @db.Timestamptz(6)
+  email         String    @unique
+  id            Int       @id @default(autoincrement())
+  name          String?
+  updatedAt     DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+  username      String?
+  emailVerified Boolean   @default(false)
+  image         String?
+  sessions      Session[]
+  accounts      Account[]
 }
 
-model User {
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  email     String   @unique
+model Session {
   id        Int      @id @default(autoincrement())
-  name      String?
+  expiresAt DateTime @db.Timestamptz(6)
+  token     String   @unique
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(6)
-  username  String?
-  posts     Post[]
+  ipAddress String?
+  userAgent String?
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                    Int       @id @default(autoincrement())
+  accountId             String
+  providerId            String
+  userId                Int
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime? @db.Timestamptz(6)
+  refreshTokenExpiresAt DateTime? @db.Timestamptz(6)
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt             DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+}
+
+model Verification {
+  id         Int      @id @default(autoincrement())
+  identifier String
+  value      String
+  expiresAt  DateTime @db.Timestamptz(6)
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime @default(now()) @updatedAt @db.Timestamptz(6)
 }
