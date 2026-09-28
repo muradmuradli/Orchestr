@@ -1,5 +1,6 @@
 {
   "name": "orchestr",
+  "type": "module",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,15 +8,18 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "contract:emit": "prisma contract emit"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
+    "@prisma/orm-postgres": "8.0.0-rc.12",
     "@shadcn/react": "^0.3.1",
     "class-variance-authority": "^0.7.1",
     "cmdk": "^1.1.1",
     "cn": "^0.4.0",
     "date-fns": "^4.4.0",
+    "dotenv": "^18.0.4",
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.5.0",
     "lucide-react": "^1.48.0",
@@ -34,6 +38,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "prisma": "8.0.0-rc.17",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
